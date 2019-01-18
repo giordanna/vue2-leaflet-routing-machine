@@ -7,11 +7,16 @@
 <script>
 import L from 'leaflet'
 import { IRouter, IGeocoder, LineOptions } from 'leaflet-routing-machine'
+import { findRealParent } from 'vue2-leaflet';
 
 const props = {
+  visible: {
+    type: Boolean,
+    default: true
+  },
   waypoints: {
     type: Array,
-    default: () => []
+    required: true
   },
   router: {
     type: IRouter
@@ -61,45 +66,62 @@ const props = {
   }
 }
 
+// const optionTestNames = [
+//   'router',
+//   'plan',
+//   'geocoder',
+//   'lineOptions',
+//   'routeLine',
+//   'altLineOptions'
+// ]
+
 export default {
   props,
   name: 'LRoutingMachine',
   data() {
     return {
-      ready: false
+      parentContainer: null,
+      ready: false,
+      layer: null
     }
   },
   mounted() {
+    this.parentContainer = findRealParent(this.$parent)
     this.add()
     this.ready = true
   },
   beforeDestroy() {
-    this.$parent.removeLayer(this)
+    return this.layer ? this.layer.remove() : null
   },
   methods: {
-    add() {
-      if (this.$parent._isMounted) {
+    add () {
+      if (this.parentContainer._isMounted) {
+        const {
+          waypoints,
+          fitSelectedRoutes,
+          autoRoute,
+          routeWhileDragging,
+          routeDragInterval,
+          waypointMode,
+          useZoomParameter,
+          showAlternatives
+        } = this
 
         const options = {
-          waypoints: this.waypoints,
-          fitSelectedRoutes: this.fitSelectedRoutes,
-          autoRoute: this.autoRoute,
-          routeWhileDragging: this.routeWhileDragging,
-          routeDragInterval: this.routeDragInterval,
-          waypointMode: this.waypointMode,
-          useZoomParameter: this.useZoomParameter,
-          showAlternatives: this.showAlternatives
+          waypoints,
+          fitSelectedRoutes,
+          autoRoute,
+          routeWhileDragging,
+          routeDragInterval,
+          waypointMode,
+          useZoomParameter,
+          showAlternatives
         }
 
-        const optionTestNames = ['router, plan, geocoder, lineOptions', 'routeLine', 'altLineOptions']
-
-        optionTestNames.map((optionName) => {
-          if (this[optionName] !== undefined) {
-            options[optionName] = this[optionName]
-          }
-        })
-        
-        L.Routing.control(options).addTo(this.$parent.mapObject)
+        const { mapObject } = this.parentContainer
+        const routingLayer = L.Routing.control(options)
+        routingLayer.addTo(mapObject)
+        this.layer = routingLayer
       }
     }
   }
@@ -107,5 +129,5 @@ export default {
 </script>
 
 <style>
-@import "../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css";
+  @import '../../node_modules/leaflet-routing-machine/dist/leaflet-routing-machine.css';
 </style>

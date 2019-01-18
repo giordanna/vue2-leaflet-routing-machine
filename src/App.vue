@@ -1,28 +1,32 @@
 <template>
   <div id="app">
     <l-map :zoom="zoom" :center="center">
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-routing-machine :waypoints="waypoints"></l-routing-machine>
+      <l-tile-layer
+        :url="osmUrl"
+        :attribution="attribution"/>
+      <l-routing-machine :waypoints="waypoints"/>
     </l-map>
   </div>
 </template>
 
 <script>
 import { LMap, LTileLayer } from 'vue2-leaflet'
-import LRoutingMachine from './components/Vue2LeafletRoutingMachine.vue'
-import L from 'leaflet'
+import LRoutingMachine from './components/LRoutingMachine'
+
+const attribution = '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+const osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
 
 export default {
   components: { LMap, LTileLayer, LRoutingMachine },
   data () {
     return {
       zoom: 6,
-      center: L.latLng(38.7436056, -2.2304153),
-      url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-      attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      center: { lat: 38.7436056, lng: -2.2304153 },
+      osmUrl,
+      attribution,
       waypoints: [
-        L.latLng(38.7436056, -9.2304153),
-        L.latLng(38.7436056, -0.1312811)
+        { lat: 38.7436056, lng: -9.2304153 },
+        { lat: 38.7436056, lng: -0.131281 }
       ]
     }
   }
