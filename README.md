@@ -2,7 +2,7 @@
 
 This is a [Leaflet Routing Machine plugin](https://github.com/perliedman/leaflet-routing-machine) extension for [vue2-leaflet package](https://github.com/KoRiGaN/Vue2Leaflet).
 
-[JSFiddle](https://jsfiddle.net/giordanna/g6807yjb/) com uma implementação mais simples.
+You can view it running on [Github Pages](giordanna.github.io/vue2-leaflet-routing-machine).
 
 ## Project setup
 ```
