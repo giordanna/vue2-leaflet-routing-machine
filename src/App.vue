@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <l-map :zoom="zoom" :center="center" ref="map">
+      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+      <l-routing-machine :waypoints="waypoints"></l-routing-machine>
+    </l-map>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { LMap, LTileLayer } from 'vue2-leaflet'
+import LRoutingMachine from './components/Vue2LeafletRoutingMachine.vue'
+import L from 'leaflet'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  components: { LMap, LTileLayer, LRoutingMachine },
+  data() {
+    return {
+      zoom: 6,
+      center: L.latLng(38.7436056, -2.2304153),
+      url:'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      waypoints: [
+        L.latLng(38.7436056, -9.2304153),
+        L.latLng(38.7436056, -0.1312811)
+      ]
+    }
   }
 }
+
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.leaflet-fake-icon-image-2x {
+  background-image: url(../node_modules/leaflet/dist/images/marker-icon-2x.png);
+}
+.leaflet-fake-icon-shadow {
+  background-image: url(../node_modules/leaflet/dist/images/marker-shadow.png);
+}
+@import "../node_modules/leaflet/dist/leaflet.css";
+
+html, body, #app {
+  height: 100%;
+  margin: 0;
 }
 </style>
