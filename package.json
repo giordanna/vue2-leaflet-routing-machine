@@ -1,5 +1,5 @@
 {
-  "name": "leaflet",
+  "name": "vue2-leaflet-routing-machine",
   "version": "0.1.0",
   "private": true,
   "scripts": {
